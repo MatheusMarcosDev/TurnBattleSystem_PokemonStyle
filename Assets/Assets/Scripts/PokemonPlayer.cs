@@ -19,6 +19,7 @@ public class PokemonPlayer : MonoBehaviour
     private string actionPokemonPlayer;
 
     private Transform hpBarSize;
+    private Vector3 vector3;
 
     void Awake()
     {
@@ -27,11 +28,28 @@ public class PokemonPlayer : MonoBehaviour
 
     void Start()
     {
-        
+        hpPokemonPlayer = hpMaxPokemonPlayer;
+        hpBarSize = GameObject.Find("PokemonPlayerHP").transform;
+        hpPercentagePokemonPlayer = hpPokemonPlayer / hpMaxPokemonPlayer;
+        vector3 = hpBarSize.localScale;
+        vector3.x = hpPercentagePokemonPlayer;
+        hpBarSize.localScale = vector3;
     }
 
-    void Update()
+    public void TakeDamage(int hit)
     {
-        
+        hpPokemonPlayer -= hit;
+
+        if(hpPokemonPlayer < 0)
+        {
+            hpPokemonPlayer = 0;
+
+            GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+        hpPercentagePokemonPlayer = hpPokemonPlayer / hpMaxPokemonPlayer;
+        vector3 = hpBarSize.localScale;
+        vector3.x = hpPercentagePokemonPlayer;
+        hpBarSize.localScale = vector3;
     }
 }
