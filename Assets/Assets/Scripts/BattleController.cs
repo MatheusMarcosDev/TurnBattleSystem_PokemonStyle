@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class BattleController : MonoBehaviour
 {
@@ -11,12 +10,14 @@ public class BattleController : MonoBehaviour
 
     public string text;
     public Text textGame;
-    public int idFase;
+    public int idPhase;
 
     private Transform trainer;
     private Transform pokemonPlayer;
     private Transform posA;
     private Transform posB;
+    public GameObject menuA;
+    public GameObject menuB;
 
 
     void Awake()
@@ -27,18 +28,21 @@ public class BattleController : MonoBehaviour
         pokemonPlayer = PokemonPlayer.instance.transform;
         posA = GameObject.Find("posA").transform;
         posB = GameObject.Find("posB").transform;
+
+        menuA.SetActive(false);
+        menuB.SetActive(false);
     }
 
     void Start()
     {
-        idFase = 0;
+        idPhase = 0;
         text = "Wild " + PokemonEnemy.instance.namePokemonEnemy + " appeared!";
         StartCoroutine("Dialogue", text);
     }
 
     void Update()
     {
-        if(idFase == 2)
+        if(idPhase == 1)
         {
             trainer.GetComponent<Animator>().SetBool("Throwing", true);
 
@@ -60,16 +64,33 @@ public class BattleController : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        idFase += 1;
-
         yield return new WaitForSeconds(1);
 
-        switch (idFase)
+        idPhase += 1;
+
+        switch (idPhase)
         {
             case 1:
                 text = "Go! " + PokemonPlayer.instance.namePokemonPlayer + "!";
                 StartCoroutine("Dialogue", text);
                 break;
+
+            case 2:
+                PokemonPlayer.instance.InitPokemonPlayerCommand();
+                break;
         }
+    }
+
+    public void Fight()
+    {
+        menuA.SetActive(false);
+        menuB.SetActive(true);
+        PokemonPlayer.instance.SkillsPokemon();
+    }
+
+    public void Command(int idCommand)
+    {
+        menuB.SetActive(false);
+        PokemonPlayer.instance.StartCoroutine("Command", idCommand);
     }
 }
