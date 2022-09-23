@@ -7,7 +7,6 @@ public class BattleController : MonoBehaviour
 {
     public static BattleController instance;
 
-
     public string text;
     public Text textGame;
     public int idPhase;
@@ -18,7 +17,6 @@ public class BattleController : MonoBehaviour
     private Transform posB;
     public GameObject menuA;
     public GameObject menuB;
-
 
     void Awake()
     {

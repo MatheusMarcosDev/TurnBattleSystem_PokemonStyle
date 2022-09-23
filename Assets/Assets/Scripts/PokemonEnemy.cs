@@ -15,6 +15,7 @@ public class PokemonEnemy : MonoBehaviour
 
     public string[] skillsPokemonEnemy;
     public int[] damageSkillsPokemonEnemy;
+    public GameObject[] animations;
 
     private string actionPokemonEnemy;
 
@@ -124,11 +125,15 @@ public class PokemonEnemy : MonoBehaviour
     }
     public IEnumerator DealDamage()
     {
+        GameObject tempPrefab = Instantiate(animations[idCommand]) as GameObject;
+        tempPrefab.transform.position = PokemonPlayer.instance.transform.position;
+
         hit = Random.Range(1, damageSkillsPokemonEnemy[idCommand]);
         actionPokemonEnemy = "Foe " + namePokemonEnemy + " used " + skillsPokemonEnemy[idCommand] + "!";
         StartCoroutine("Dialogue", actionPokemonEnemy);
         Debug.Log(hit);
         yield return new WaitForSeconds(1);
+        Destroy(tempPrefab);
         PokemonPlayer.instance.TakeDamage(hit);
         idPhase = 2;
     }

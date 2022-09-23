@@ -641,13 +641,18 @@ MonoBehaviour:
   xpPokemonPlayer: 0
   hpMaxPokemonPlayer: 11
   hpPokemonPlayer: 0
-  hpPercentagePokemonPlayer: 0
+  PercentagePokemonPlayer: 0
   skillsPokemonPlayer:
   - SOLAR BEAM
   - TACKLE
   - RAZOR LEAF
   - VINE WHIP
   damageSkillsPokemonPlayer: 06000000070000000600000005000000
+  animations:
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  - {fileID: 3718594568827228527, guid: 6175de437e005a14289afa665da799e2, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
   idPhase: 0
 --- !u!1 &301450566
 GameObject:
@@ -1879,7 +1884,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300006, guid: 527473cf4bd8b6445b38392c2dd5a92e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2340,6 +2345,12 @@ MonoBehaviour:
   - PECK
   - GUST
   damageSkillsPokemonEnemy: 0600000004000000050000000300000007000000
+  animations:
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
   idPhase: 0
 --- !u!1 &1041368024
 GameObject:
