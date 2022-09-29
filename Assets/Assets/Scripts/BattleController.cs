@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class BattleController : MonoBehaviour
 {
+    public PokemonPlayerObject pokemonPlayerObject;
+
     public static BattleController instance;
 
     public string text;
@@ -69,7 +71,7 @@ public class BattleController : MonoBehaviour
         switch (idPhase)
         {
             case 1:
-                text = "Go! " + PokemonPlayer.instance.namePokemonPlayer + "!";
+                text = "Go! " + pokemonPlayerObject.namePP + "!";
                 StartCoroutine("Dialogue", text);
                 break;
 

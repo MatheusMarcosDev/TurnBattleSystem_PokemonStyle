@@ -5,18 +5,21 @@ using UnityEngine.UI;
 
 public class PokemonPlayer : MonoBehaviour
 {
+    public PokemonPlayerObject pokemonPlayerObject;
     public static PokemonPlayer instance;
 
-    public string namePokemonPlayer;
-    public int levelPokemonPlayer;
-    public int xpPokemonPlayer;
-    public float hpMaxPokemonPlayer;
-    public float hpPokemonPlayer;
+    [Header("Pokemon Info/Stats")]
+    public string namePP;
+    public float maxLifePP;
+    public float currentLifePP;
+    public int currentLevelPP;
+    public int currentExpPP;
+
     public float PercentagePokemonPlayer;
 
-    public string[] skillsPokemonPlayer;
+    public string[] skillsNamePP;
     public int[] damageSkillsPokemonPlayer;
-    public GameObject[] animations;
+    public GameObject[] animationsSkillsPP;
 
     private string actionPokemonPlayer;
 
@@ -41,17 +44,17 @@ public class PokemonPlayer : MonoBehaviour
 
     void Start()
     {
-        hpPokemonPlayer = hpMaxPokemonPlayer;
+        pokemonPlayerObject.currentLifePP = pokemonPlayerObject.maxLifePP;
 
         hpBarSize = GameObject.Find("PokemonPlayerHP").transform;
         xpBarSize = GameObject.Find("PokemonPlayerXP").transform;
 
-        PercentagePokemonPlayer = hpPokemonPlayer / hpMaxPokemonPlayer;
+        PercentagePokemonPlayer = pokemonPlayerObject.currentLifePP / pokemonPlayerObject.maxLifePP;
         vector3 = hpBarSize.localScale;
         vector3.x = PercentagePokemonPlayer;
         hpBarSize.localScale = vector3;
 
-        PercentagePokemonPlayer = xpPokemonPlayer / 100f;
+        PercentagePokemonPlayer = pokemonPlayerObject.currentExpPP / 100f;
         vector3 = xpBarSize.localScale;
         vector3.x = PercentagePokemonPlayer;
         xpBarSize.localScale = vector3;
@@ -59,16 +62,16 @@ public class PokemonPlayer : MonoBehaviour
 
     public void TakeDamage(int hit)
     {
-        hpPokemonPlayer -= hit;
+        pokemonPlayerObject.currentLifePP -= hit;
 
-        if (hpPokemonPlayer < 0)
+        if (pokemonPlayerObject.currentLifePP < 0)
         {
-            hpPokemonPlayer = 0;
+            pokemonPlayerObject.currentLifePP = 0;
 
             GetComponent<SpriteRenderer>().enabled = false;
         }
 
-        PercentagePokemonPlayer = hpPokemonPlayer / hpMaxPokemonPlayer;
+        PercentagePokemonPlayer = pokemonPlayerObject.currentLifePP / pokemonPlayerObject.maxLifePP;
         vector3 = hpBarSize.localScale;
         vector3.x = PercentagePokemonPlayer;
         hpBarSize.localScale = vector3;
@@ -81,10 +84,10 @@ public class PokemonPlayer : MonoBehaviour
         buttonSkillC = GameObject.Find("TextSkillC");
         buttonSkillD = GameObject.Find("TextSkillD");
 
-        buttonSkillA.GetComponent<Text>().text = skillsPokemonPlayer[0];
-        buttonSkillB.GetComponent<Text>().text = skillsPokemonPlayer[1];
-        buttonSkillC.GetComponent<Text>().text = skillsPokemonPlayer[2];
-        buttonSkillD.GetComponent<Text>().text = skillsPokemonPlayer[3];
+        buttonSkillA.GetComponent<Text>().text = pokemonPlayerObject.skillsNamePP[0];
+        buttonSkillB.GetComponent<Text>().text = pokemonPlayerObject.skillsNamePP[1];
+        buttonSkillC.GetComponent<Text>().text = pokemonPlayerObject.skillsNamePP[2];
+        buttonSkillD.GetComponent<Text>().text = pokemonPlayerObject.skillsNamePP[3];
     }
 
     public IEnumerator Command(int idAction)
@@ -163,11 +166,11 @@ public class PokemonPlayer : MonoBehaviour
 
     public IEnumerator DealDamage()
     {
-        GameObject tempPrefab = Instantiate(animations[idCommand]) as GameObject;
+        GameObject tempPrefab = Instantiate(pokemonPlayerObject.animationsSkillsPP[idCommand]) as GameObject;
         tempPrefab.transform.position = PokemonEnemy.instance.transform.position;
 
         hit = Random.Range(1, damageSkillsPokemonPlayer[idCommand]);
-        actionPokemonPlayer = namePokemonPlayer + " used " + skillsPokemonPlayer[idCommand] + "!";
+        actionPokemonPlayer = pokemonPlayerObject.namePP + " used " + pokemonPlayerObject.skillsNamePP[idCommand] + "!";
         StartCoroutine("Dialogue", actionPokemonPlayer);
         yield return new WaitForSeconds(1);
         PokemonEnemy.instance.TakeDamage(hit);
@@ -185,18 +188,18 @@ public class PokemonPlayer : MonoBehaviour
 
     public void InitPokemonPlayerCommand()
     {
-        actionPokemonPlayer = "What will " + PokemonPlayer.instance.namePokemonPlayer + " do?";
+        actionPokemonPlayer = "What will " + pokemonPlayerObject.namePP + " do?";
         StartCoroutine("Dialogue", actionPokemonPlayer);
         idPhase = 3;
     }
 
     public IEnumerator GainXP(int amountXP)
     {
-        actionPokemonPlayer = namePokemonPlayer + " gained " + amountXP + " EXP. Points!";
+        actionPokemonPlayer = pokemonPlayerObject.namePP + " gained " + amountXP + " EXP. Points!";
         StartCoroutine("Dialogue", actionPokemonPlayer);
-        xpPokemonPlayer += amountXP;
+        pokemonPlayerObject.currentExpPP += amountXP;
 
-        PercentagePokemonPlayer = xpPokemonPlayer / 100f;
+        PercentagePokemonPlayer = pokemonPlayerObject.currentExpPP / 100f;
         vector3 = xpBarSize.localScale;
         vector3.x = PercentagePokemonPlayer;
         xpBarSize.localScale = vector3;

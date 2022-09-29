@@ -636,23 +636,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31dea70a492a3af4aa0f313cc9d773d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  namePokemonPlayer: CHIKORITA
-  levelPokemonPlayer: 1
-  xpPokemonPlayer: 0
-  hpMaxPokemonPlayer: 11
-  hpPokemonPlayer: 0
+  pokemonPlayerObject: {fileID: 11400000, guid: c1a74f9240151894cac605467a7f12dc, type: 2}
+  namePP: 
+  maxLifePP: 0
+  currentLifePP: 0
+  currentLevelPP: 0
+  currentExpPP: 0
   PercentagePokemonPlayer: 0
-  skillsPokemonPlayer:
-  - SOLAR BEAM
-  - TACKLE
-  - RAZOR LEAF
-  - VINE WHIP
+  skillsNamePP: []
   damageSkillsPokemonPlayer: 06000000070000000600000005000000
-  animations:
-  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
-  - {fileID: 3718594568827228527, guid: 6175de437e005a14289afa665da799e2, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
+  animationsSkillsPP: []
   idPhase: 0
 --- !u!1 &301450566
 GameObject:
@@ -1467,6 +1460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15155d0114329e4b906e837ace36cc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pokemonPlayerObject: {fileID: 11400000, guid: c1a74f9240151894cac605467a7f12dc, type: 2}
   text: 
   textGame: {fileID: 385442253}
   idPhase: 0
