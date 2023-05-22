@@ -9,22 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff3456c53d9c55944b9e4bd5fbd76c14, type: 3}
-  m_Name: CHIKORITA
+  m_Script: {fileID: 11500000, guid: df601ba412f735c4fa8c19e296ec6a4a, type: 3}
+  m_Name: PIDGEY
   m_EditorClassIdentifier: 
-  namePP: CHIKORITA
-  maxLifePP: 100
-  currentLifePP: 99
-  currentLevelPP: 1
-  currentExpPP: 35
-  animationsSkillsPP:
+  namePE: PIDGEY
+  maxLifePE: 100
+  currentLifePE: 100
+  currentLevelPE: 1
+  defeatExpPE: 35
+  animationsSkillsPE:
   - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
   - {fileID: 3718594568827228527, guid: 6175de437e005a14289afa665da799e2, type: 3}
   - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
   - {fileID: 3718594568827228527, guid: 6175de437e005a14289afa665da799e2, type: 3}
-  skillsNamePP:
-  - SOLAR BEAM
-  - TACKLE
-  - RAZOR LEAF
-  - MAGICAL LEAF
-  damagesSkillsPP: 0a000000230000001900000014000000
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  skillsNamePE:
+  - SANDS ATTACK
+  - QUICK ATTACK
+  - WING ATTACK
+  - PECK
+  - GUST
+  damagesSkillsPE: 0600000004000000050000000300000007000000

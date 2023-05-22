@@ -2,8 +2,6 @@ using UnityEngine;
 
 [CreateAssetMenu (fileName = "New Pokemon", menuName = "Pokemon/Pokemon Player")]
 
-//PP = Pokemon Player
-
 public class PokemonPlayerObject : ScriptableObject
 {
     [Header ("Pokemon Info/Stats")]
