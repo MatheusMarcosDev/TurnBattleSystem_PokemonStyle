@@ -6,25 +6,17 @@ public class PokemonEnemy : MonoBehaviour
 {
     public static PokemonEnemy instance;
 
-    public string namePokemonEnemy;
-    public int levelPokemonEnemy;
-    public int xpPokemonEnemy;
-    public float hpMaxPokemonEnemy;
-    public float hpPokemonEnemy;
+    public PokemonEnemyObject pokemonEnemyObject;
+
     public float hpPercentagePokemonEnemy;
-
-    public string[] skillsPokemonEnemy;
-    public int[] damageSkillsPokemonEnemy;
-    public GameObject[] animations;
-
-    private string actionPokemonEnemy;
-
     private Transform hpBarSize;
     private Vector3 vector3;
 
     private int idCommand;
     private int hit;
     public int idPhase;
+
+    private string actionPokemonEnemy;
 
     void Awake()
     {
@@ -33,34 +25,29 @@ public class PokemonEnemy : MonoBehaviour
 
     void Start()
     {
-        hpPokemonEnemy = hpMaxPokemonEnemy;
+        pokemonEnemyObject.currentLifePE = pokemonEnemyObject.maxLifePE;
         hpBarSize = GameObject.Find("PokemonEnemyHP").transform;
-        hpPercentagePokemonEnemy = hpPokemonEnemy / hpMaxPokemonEnemy;
-        vector3 = hpBarSize.localScale;
-        vector3.x = hpPercentagePokemonEnemy;
-        hpBarSize.localScale = vector3;
+
+        BarHPPokemonEnemy();
     }
 
     public void TakeDamage(int hit)
     {
-        hpPokemonEnemy -= hit;
+        pokemonEnemyObject.currentLifePE -= hit;
 
-        if (hpPokemonEnemy <= 0)
+        if (pokemonEnemyObject.currentLifePE <= 0)
         {
-            hpPokemonEnemy = 0;
+            pokemonEnemyObject.currentLifePE = 0;
 
             GetComponent<SpriteRenderer>().enabled = false;
         }
 
-        hpPercentagePokemonEnemy = hpPokemonEnemy / hpMaxPokemonEnemy;
-        vector3 = hpBarSize.localScale;
-        vector3.x = hpPercentagePokemonEnemy;
-        hpBarSize.localScale = vector3;
+        BarHPPokemonEnemy();
     }
 
     public IEnumerator InitAction()
     {
-        idCommand = Random.Range(0, skillsPokemonEnemy.Length);
+        idCommand = Random.Range(0, pokemonEnemyObject.skillsNamePE.Length);
 
         yield return new WaitForSeconds(1);
 
@@ -69,39 +56,18 @@ public class PokemonEnemy : MonoBehaviour
 
     public IEnumerator Command(int idAction)
     {
-        switch(idAction)
-        {
-            case 0:
-                StartCoroutine("DealDamage");
-                break;
-
-            case 1:
-                StartCoroutine("DealDamage");
-                break;
-
-            case 2:
-                StartCoroutine("DealDamage");
-                break;
-
-            case 3:
-                StartCoroutine("DealDamage");
-                break;
-
-            case 4:
-                StartCoroutine("DealDamage");
-                break;
-        }
+        StartCoroutine(DealDamage(idAction));
         yield return new WaitForSeconds(1);
     }
 
     public IEnumerator Dialogue(string coroutineText)
     {
         int letter = 0;
-        BattleController.instance.textGame.text = "";
+        UIController.instance.textGame.text = "";
 
         while (letter <= coroutineText.Length - 1)
         {
-            BattleController.instance.textGame.text += coroutineText[letter];
+            UIController.instance.textGame.text += coroutineText[letter];
             letter += 1;
             yield return new WaitForSeconds(0.05f);
         }
@@ -123,18 +89,26 @@ public class PokemonEnemy : MonoBehaviour
                 break;
         }
     }
-    public IEnumerator DealDamage()
+
+    public IEnumerator DealDamage(int idAction)
     {
-        GameObject tempPrefab = Instantiate(animations[idCommand]) as GameObject;
+        GameObject tempPrefab = Instantiate(pokemonEnemyObject.animationsSkillsPE[idCommand]) as GameObject;
         tempPrefab.transform.position = PokemonPlayer.instance.transform.position;
 
-        hit = Random.Range(1, damageSkillsPokemonEnemy[idCommand]);
-        actionPokemonEnemy = "Foe " + namePokemonEnemy + " used " + skillsPokemonEnemy[idCommand] + "!";
+        hit = Random.Range(1, pokemonEnemyObject.damagesSkillsPE[idCommand] + 1);
+        actionPokemonEnemy = "Foe " + pokemonEnemyObject.namePE + " used " + pokemonEnemyObject.skillsNamePE[idCommand] + "!";
         StartCoroutine("Dialogue", actionPokemonEnemy);
-        Debug.Log(hit);
         yield return new WaitForSeconds(1);
         Destroy(tempPrefab);
         PokemonPlayer.instance.TakeDamage(hit);
         idPhase = 2;
+    }
+
+    void BarHPPokemonEnemy()
+    {
+        hpPercentagePokemonEnemy = pokemonEnemyObject.currentLifePE / pokemonEnemyObject.maxLifePE;
+        vector3 = hpBarSize.localScale;
+        vector3.x = hpPercentagePokemonEnemy;
+        hpBarSize.localScale = vector3;
     }
 }

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df601ba412f735c4fa8c19e296ec6a4a, type: 3}
+  m_Name: PIDGEY
+  m_EditorClassIdentifier: 
+  namePE: PIDGEY
+  maxLifePE: 100
+  currentLifePE: 100
+  currentLevelPE: 1
+  defeatExpPE: 35
+  animationsSkillsPE:
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  - {fileID: 3718594568827228527, guid: 6175de437e005a14289afa665da799e2, type: 3}
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  - {fileID: 3718594568827228527, guid: 6175de437e005a14289afa665da799e2, type: 3}
+  - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
+  skillsNamePE:
+  - SANDS ATTACK
+  - QUICK ATTACK
+  - WING ATTACK
+  - PECK
+  - GUST
+  damagesSkillsPE: 0600000004000000050000000300000007000000

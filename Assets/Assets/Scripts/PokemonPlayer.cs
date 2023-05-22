@@ -7,32 +7,17 @@ public class PokemonPlayer : MonoBehaviour
 {
     public static PokemonPlayer instance;
 
-    public string namePokemonPlayer;
-    public int levelPokemonPlayer;
-    public int xpPokemonPlayer;
-    public float hpMaxPokemonPlayer;
-    public float hpPokemonPlayer;
-    public float PercentagePokemonPlayer;
+    private Transform   xpBarSize;
+    private Transform   hpBarSize;
+    private Vector3     vector3;
+    private string      actionPokemonPlayer;
+    private int         idCommand;
+    private int         hit;
 
-    public string[] skillsPokemonPlayer;
-    public int[] damageSkillsPokemonPlayer;
-    public GameObject[] animations;
-
-    private string actionPokemonPlayer;
-
-    private Transform hpBarSize;
-    private Vector3 vector3;
-
-    private Transform xpBarSize;
-
-    private GameObject buttonSkillA;
-    private GameObject buttonSkillB;
-    private GameObject buttonSkillC;
-    private GameObject buttonSkillD;
-
-    private int idCommand;
-    private int hit;
-    public int idPhase;
+    public PokemonPlayerObject  pokemonPlayerObject;
+    public PokemonEnemyObject pokemonEnemyObject;
+    public float                PercentagePokemonPlayer;
+    public int                  idPhase;
 
     void Awake()
     {
@@ -41,17 +26,32 @@ public class PokemonPlayer : MonoBehaviour
 
     void Start()
     {
-        hpPokemonPlayer = hpMaxPokemonPlayer;
+        SetupPokemonPlayer();
+    }
 
+    void SetupPokemonPlayer()
+    {
+        pokemonPlayerObject.currentLifePP = pokemonPlayerObject.maxLifePP;
+
+        BarHPPokemonPlayer();
+        BarXPPokemonPlayer();
+    }
+
+    void BarHPPokemonPlayer()
+    {
         hpBarSize = GameObject.Find("PokemonPlayerHP").transform;
-        xpBarSize = GameObject.Find("PokemonPlayerXP").transform;
 
-        PercentagePokemonPlayer = hpPokemonPlayer / hpMaxPokemonPlayer;
+        PercentagePokemonPlayer = pokemonPlayerObject.currentLifePP / pokemonPlayerObject.maxLifePP;
         vector3 = hpBarSize.localScale;
         vector3.x = PercentagePokemonPlayer;
         hpBarSize.localScale = vector3;
+    }
 
-        PercentagePokemonPlayer = xpPokemonPlayer / 100f;
+    void BarXPPokemonPlayer()
+    {
+        xpBarSize = GameObject.Find("PokemonPlayerXP").transform;
+
+        PercentagePokemonPlayer = pokemonPlayerObject.currentExpPP / 100f;
         vector3 = xpBarSize.localScale;
         vector3.x = PercentagePokemonPlayer;
         xpBarSize.localScale = vector3;
@@ -59,32 +59,45 @@ public class PokemonPlayer : MonoBehaviour
 
     public void TakeDamage(int hit)
     {
-        hpPokemonPlayer -= hit;
+        pokemonPlayerObject.currentLifePP -= hit;
 
-        if (hpPokemonPlayer < 0)
+        if (pokemonPlayerObject.currentLifePP < 0)
         {
-            hpPokemonPlayer = 0;
+            pokemonPlayerObject.currentLifePP = 0;
 
             GetComponent<SpriteRenderer>().enabled = false;
         }
 
-        PercentagePokemonPlayer = hpPokemonPlayer / hpMaxPokemonPlayer;
-        vector3 = hpBarSize.localScale;
-        vector3.x = PercentagePokemonPlayer;
-        hpBarSize.localScale = vector3;
+        BarHPPokemonPlayer();
     }
 
     public void SkillsPokemon()
     {
-        buttonSkillA = GameObject.Find("TextSkillA");
-        buttonSkillB = GameObject.Find("TextSkillB");
-        buttonSkillC = GameObject.Find("TextSkillC");
-        buttonSkillD = GameObject.Find("TextSkillD");
+        string[] buttonNames = { "TextSkillA", "TextSkillB", "TextSkillC", "TextSkillD" };
 
-        buttonSkillA.GetComponent<Text>().text = skillsPokemonPlayer[0];
-        buttonSkillB.GetComponent<Text>().text = skillsPokemonPlayer[1];
-        buttonSkillC.GetComponent<Text>().text = skillsPokemonPlayer[2];
-        buttonSkillD.GetComponent<Text>().text = skillsPokemonPlayer[3];
+        for (int i = 0; i < buttonNames.Length; i++)
+        {
+            GameObject buttonObject = GameObject.Find(buttonNames[i]);
+            buttonObject.GetComponent<Text>().text = pokemonPlayerObject.skillsNamePP[i];
+        }
+    }
+
+    public void InitPokemonPlayerCommand()
+    {
+        actionPokemonPlayer = "What will " + pokemonPlayerObject.namePP + " do?";
+        StartCoroutine("Dialogue", actionPokemonPlayer);
+        idPhase = 3;
+    }
+
+    public IEnumerator GainXP(int amountXP)
+    {
+        actionPokemonPlayer = pokemonPlayerObject.namePP + " gained " + amountXP + " EXP. Points!";
+        StartCoroutine("Dialogue", actionPokemonPlayer);
+        pokemonPlayerObject.currentExpPP += amountXP;
+
+        BarXPPokemonPlayer();
+
+        yield return new WaitForSeconds(1);
     }
 
     public IEnumerator Command(int idAction)
@@ -93,28 +106,29 @@ public class PokemonPlayer : MonoBehaviour
         {
             case 0:
                 idCommand = 0;
-                actionPokemonPlayer = " ";
+                actionPokemonPlayer = "";
                 StartCoroutine("Dialogue", actionPokemonPlayer);
                 break;
 
             case 1:
                 idCommand = 1;
-                actionPokemonPlayer = " ";
+                actionPokemonPlayer = "";
                 StartCoroutine("Dialogue", actionPokemonPlayer);
                 break;
 
             case 2:
                 idCommand = 2;
-                actionPokemonPlayer = " ";
+                actionPokemonPlayer = "";
                 StartCoroutine("Dialogue", actionPokemonPlayer);
                 break;
 
             case 3:
                 idCommand = 3;
-                actionPokemonPlayer = " ";
+                actionPokemonPlayer = "";
                 StartCoroutine("Dialogue", actionPokemonPlayer);
                 break;
         }
+
         idPhase = 1;
 
         return null;
@@ -122,14 +136,17 @@ public class PokemonPlayer : MonoBehaviour
 
     public IEnumerator Dialogue(string coroutineText)
     {
-        int letter = 0;
-        BattleController.instance.textGame.text = "";
-
-        while (letter <= coroutineText.Length - 1)
+        if (!string.IsNullOrEmpty(coroutineText))
         {
-            BattleController.instance.textGame.text += coroutineText[letter];
-            letter += 1;
-            yield return new WaitForSeconds(0.05f);
+            int letter = 0;
+            UIController.instance.textGame.text = "";
+
+            while (letter <= coroutineText.Length - 1)
+            {
+                UIController.instance.textGame.text += coroutineText[letter];
+                letter += 1;
+                yield return new WaitForSeconds(0.05f);
+            }
         }
 
         yield return new WaitForSeconds(1);
@@ -145,17 +162,17 @@ public class PokemonPlayer : MonoBehaviour
                 break;
 
             case 3:
-                BattleController.instance.menuA.SetActive(true);
+                UIController.instance.menuA.SetActive(true);
                 break;
 
             case 4:
-                actionPokemonPlayer = "Foe " + PokemonEnemy.instance.namePokemonEnemy + " fainted!";
+                actionPokemonPlayer = "Foe " + pokemonEnemyObject.name + " fainted!";
                 StartCoroutine("Dialogue", actionPokemonPlayer);
                 idPhase = 5;
                 break;
 
             case 5:
-                StartCoroutine("GainXP", PokemonEnemy.instance.xpPokemonEnemy);
+                StartCoroutine("GainXP", pokemonEnemyObject.defeatExpPE);
                 idPhase = 6;
                 break;
         }
@@ -163,17 +180,17 @@ public class PokemonPlayer : MonoBehaviour
 
     public IEnumerator DealDamage()
     {
-        GameObject tempPrefab = Instantiate(animations[idCommand]) as GameObject;
+        GameObject tempPrefab = Instantiate(pokemonPlayerObject.animationsSkillsPP[idCommand]) as GameObject;
         tempPrefab.transform.position = PokemonEnemy.instance.transform.position;
 
-        hit = Random.Range(1, damageSkillsPokemonPlayer[idCommand]);
-        actionPokemonPlayer = namePokemonPlayer + " used " + skillsPokemonPlayer[idCommand] + "!";
+        hit = Random.Range(1, pokemonPlayerObject.damagesSkillsPP[idCommand] + 1);
+        actionPokemonPlayer = pokemonPlayerObject.namePP + " used " + pokemonPlayerObject.skillsNamePP[idCommand] + "!";
         StartCoroutine("Dialogue", actionPokemonPlayer);
         yield return new WaitForSeconds(1);
         PokemonEnemy.instance.TakeDamage(hit);
         Destroy(tempPrefab);
 
-        if (PokemonEnemy.instance.hpPokemonEnemy <= 0)
+        if (pokemonEnemyObject.currentLifePE <= 0)
         {
             idPhase = 4;
         }
@@ -181,26 +198,5 @@ public class PokemonPlayer : MonoBehaviour
         {
             idPhase = 2;
         }
-    }
-
-    public void InitPokemonPlayerCommand()
-    {
-        actionPokemonPlayer = "What will " + PokemonPlayer.instance.namePokemonPlayer + " do?";
-        StartCoroutine("Dialogue", actionPokemonPlayer);
-        idPhase = 3;
-    }
-
-    public IEnumerator GainXP(int amountXP)
-    {
-        actionPokemonPlayer = namePokemonPlayer + " gained " + amountXP + " EXP. Points!";
-        StartCoroutine("Dialogue", actionPokemonPlayer);
-        xpPokemonPlayer += amountXP;
-
-        PercentagePokemonPlayer = xpPokemonPlayer / 100f;
-        vector3 = xpBarSize.localScale;
-        vector3.x = PercentagePokemonPlayer;
-        xpBarSize.localScale = vector3;
-
-        yield return new WaitForSeconds(1);
     }
 }
