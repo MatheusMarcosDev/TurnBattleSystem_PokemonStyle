@@ -11,6 +11,8 @@ public class UIController : MonoBehaviour
     [Header ("Pokemon Player")]
     public TextMeshPro namePP;
     public TextMeshPro levelPP;
+    public TextMeshPro currentHPPP;
+    public TextMeshPro maxHPPP;
 
     [Header("Pokemon Enemy")]
     public TextMeshPro namePE;
@@ -30,8 +32,14 @@ public class UIController : MonoBehaviour
 
         namePP.text = ScriptableObjectPP.instance.currentPokemonPlayerObject.namePP;
         levelPP.text = ScriptableObjectPP.instance.currentPokemonPlayerObject.currentLevelPP.ToString();
+        maxHPPP.text = currentHPPP.text = ScriptableObjectPP.instance.currentPokemonPlayerObject.maxLifePP.ToString();
 
         namePE.text = ScriptableObjectPE.instance.currentPokemonEnemyObject.namePE;
         levelPE.text = ScriptableObjectPE.instance.currentPokemonEnemyObject.currentLevelPE.ToString();
+    }
+
+    private void LateUpdate()
+    {
+        currentHPPP.text = ScriptableObjectPP.instance.currentPokemonPlayerObject.currentLifePP.ToString();
     }
 }

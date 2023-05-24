@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PIDGEY
   m_EditorClassIdentifier: 
   namePE: PIDGEY
-  maxLifePE: 100
-  currentLifePE: 100
+  maxLifePE: 50
+  currentLifePE: 45
   currentLevelPE: 1
   defeatExpPE: 35
   animationsSkillsPE:

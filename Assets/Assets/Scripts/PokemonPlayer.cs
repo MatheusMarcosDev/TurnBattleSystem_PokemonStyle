@@ -73,7 +73,7 @@ public class PokemonPlayer : MonoBehaviour
 
     public void SkillsPokemon()
     {
-        string[] buttonNames = { "TextSkillA", "TextSkillB", "TextSkillC", "TextSkillD" };
+        string[] buttonNames = { "Skill1_Text", "Skill2_Text", "Skill3_Text", "Skill4_Text" };
 
         for (int i = 0; i < buttonNames.Length; i++)
         {

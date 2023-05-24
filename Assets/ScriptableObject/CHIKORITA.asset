@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: CHIKORITA
   m_EditorClassIdentifier: 
   namePP: CHIKORITA
-  maxLifePP: 100
-  currentLifePP: 99
+  maxLifePP: 50
+  currentLifePP: 48
   currentLevelPP: 1
-  currentExpPP: 35
+  currentExpPP: 0
   animationsSkillsPP:
   - {fileID: 7146025956859285770, guid: bb68123d39a6ad74987dfa339b4aeacd, type: 3}
   - {fileID: 3718594568827228527, guid: 6175de437e005a14289afa665da799e2, type: 3}
@@ -27,4 +27,4 @@ MonoBehaviour:
   - TACKLE
   - RAZOR LEAF
   - MAGICAL LEAF
-  damagesSkillsPP: 0a000000230000001900000014000000
+  damagesSkillsPP: 07000000050000000600000008000000
